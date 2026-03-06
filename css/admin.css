@@ -1,0 +1,86 @@
+/* =============================================
+   ESTILOS ADICIONALES DEL PANEL DE ADMINISTRADOR
+   Complementa estilos.css con reglas específicas del admin
+   ============================================= */
+
+/* Ajustes de spinner para contexto oscuro */
+.admin-sidebar .spinner-boton {
+  border-color: rgba(255, 255, 255, 0.2);
+  border-top-color: white;
+}
+
+/* Inputs en el formulario de dos columnas */
+@media (max-width: 520px) {
+  .modal-contenido [style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  .modal-contenido [style*="grid-column: 1 / -1"] {
+    grid-column: 1 !important;
+  }
+}
+
+/* Tabla responsiva en móvil */
+@media (max-width: 640px) {
+  .tabla-admin .tabla-imagen-miniatura {
+    width: 36px;
+    height: 36px;
+  }
+
+  .acciones-tabla {
+    flex-direction: column;
+  }
+}
+
+/* Sidebar mobile - mostrar como topbar */
+@media (max-width: 768px) {
+  .admin-sidebar {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: auto;
+    position: sticky;
+    top: 0;
+    left: 0;
+    bottom: auto;
+    padding: var(--espacio-3) var(--espacio-4);
+    z-index: 100;
+    overflow: visible;
+    align-items: center;
+  }
+
+  .sidebar-logo {
+    font-size: var(--texto-base);
+    padding: 0;
+    border: none;
+    margin: 0;
+    flex: 1;
+  }
+
+  .sidebar-menu {
+    flex-direction: row;
+    gap: var(--espacio-2);
+    flex: 0;
+  }
+
+  .sidebar-menu a {
+    padding: var(--espacio-2) var(--espacio-3);
+    font-size: var(--texto-xs);
+  }
+
+  .sidebar-cerrar-sesion {
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+
+  .sidebar-cerrar-sesion .boton {
+    padding: var(--espacio-2) var(--espacio-3);
+    font-size: var(--texto-xs);
+  }
+
+  .admin-principal {
+    margin-left: 0;
+    padding: var(--espacio-4);
+  }
+}

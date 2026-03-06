@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Producto - Mi Tienda</title>
+  <link rel="stylesheet" href="css/estilos.css" />
+</head>
+<body>
+
+  <!-- NAVEGACIÓN -->
+  <nav class="nav" id="nav-principal">
+    <div class="nav-interior">
+      <a href="index.html" class="nav-logo">Mi Tienda</a>
+      <div class="nav-acciones">
+        <a href="index.html" class="nav-enlace">Productos</a>
+        <button class="boton-carrito-nav" id="btn-abrir-carrito" aria-label="Abrir carrito">
+          <span class="icono-carrito">&#9679;</span>
+          <span>Carrito</span>
+          <span class="contador-carrito" id="contador-carrito">0</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="pagina-producto">
+    <div class="contenedor-angosto">
+
+      <!-- Miga de pan -->
+      <nav class="miga-pan">
+        <a href="index.html">Inicio</a>
+        <span>/</span>
+        <a href="index.html#catalogo">Productos</a>
+        <span>/</span>
+        <span id="miga-nombre-producto">Cargando...</span>
+      </nav>
+
+      <!-- Contenido del producto -->
+      <div id="contenido-producto">
+        <!-- Se carga dinámicamente -->
+      </div>
+    </div>
+  </main>
+
+  <!-- PANEL DEL CARRITO -->
+  <div class="overlay-carrito" id="overlay-carrito"></div>
+  <aside class="panel-carrito" id="panel-carrito">
+    <div class="carrito-cabecera">
+      <h3 class="carrito-titulo">Tu carrito</h3>
+      <button class="boton-cerrar-carrito" id="btn-cerrar-carrito">&times;</button>
+    </div>
+    <div class="carrito-items" id="lista-items-carrito"></div>
+    <div class="carrito-pie" id="pie-carrito" style="display: none;">
+      <div class="resumen-total">
+        <span class="etiqueta-total">Total del pedido</span>
+        <span class="valor-total" id="total-carrito">$0</span>
+      </div>
+      <button class="boton boton-acento boton-bloque boton-grande" id="btn-proceder-checkout">
+        Enviar por WhatsApp
+      </button>
+    </div>
+  </aside>
+
+  <!-- MODAL DE CHECKOUT -->
+  <div class="modal-overlay" id="modal-checkout">
+    <div class="modal-contenido">
+      <div class="modal-cabecera">
+        <h3 class="modal-titulo">Finalizar pedido</h3>
+        <button class="boton-cerrar-carrito" id="btn-cerrar-checkout">&times;</button>
+      </div>
+      <div class="modal-cuerpo">
+        <p style="font-size: var(--texto-sm); color: var(--color-texto-secundario); margin-bottom: var(--espacio-6);">
+          Completa tus datos para enviar el pedido por WhatsApp.
+        </p>
+        <div class="grupo-campo">
+          <label class="etiqueta-campo" for="nombre-cliente">Nombre completo *</label>
+          <input type="text" id="nombre-cliente" class="campo-entrada" placeholder="Tu nombre completo" />
+        </div>
+        <div class="grupo-campo">
+          <label class="etiqueta-campo" for="ciudad-cliente">Ciudad *</label>
+          <input type="text" id="ciudad-cliente" class="campo-entrada" placeholder="Tu ciudad" />
+        </div>
+        <div class="grupo-campo">
+          <label class="etiqueta-campo" for="nota-cliente">Nota adicional (opcional)</label>
+          <textarea id="nota-cliente" class="campo-entrada campo-textarea" placeholder="Instrucciones especiales..."></textarea>
+        </div>
+      </div>
+      <div class="modal-pie">
+        <button class="boton boton-acento boton-bloque boton-grande" id="btn-enviar-whatsapp">Enviar por WhatsApp</button>
+        <button class="boton boton-secundario boton-bloque" id="btn-cancelar-checkout">Volver al carrito</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/services/ui.js"></script>
+  <script src="js/services/api.js"></script>
+  <script src="js/services/carrito.js"></script>
+  <script src="js/tienda.js"></script>
+  <script src="js/producto.js"></script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BeautyLau Cosméticos</title>
+  <meta name="description" content="Tienda online con los mejores productos. Compra facil y rapido." />
+  <link rel="stylesheet" href="css/estilos.css" />
+</head>
+<body>
+
+  <!-- =============================================
+       NAVEGACIÓN
+       ============================================= -->
+  <nav class="nav" id="nav-principal">
+    <div class="nav-interior">
+      <a href="index.html" class="nav-logo">
+        <img src="img/logo.jpeg" alt="BeautyLau Cosméticos" style="height: 48px; width: auto; display: block; border-radius: 12px;" />
+      </a>
+
+      <div class="nav-acciones">
+        <a href="#catalogo" class="nav-enlace">Productos</a>
+
+        <button class="boton-carrito-nav" id="btn-abrir-carrito" aria-label="Abrir carrito">
+          <span class="icono-carrito">&#9679;</span>
+          <span>Carrito</span>
+          <span class="contador-carrito" id="contador-carrito">0</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- =============================================
+       HÉROE
+       ============================================= -->
+  <section class="seccion-hero">
+    <div class="fondo-hero"></div>
+    <div class="textura-hero"></div>
+    <div class="contenedor contenido-hero">
+      <span class="etiqueta-hero">Coleccion actual</span>
+      <h1 class="titulo-hero">Descubre <br /><em>lo mejor para tu belleza</em></h1>
+      <p class="descripcion-hero">
+        Maquillaje y productos de cuidado personal cuidadosamente seleccionados. Calidad, estilo y precios que amarás.
+      </p>
+      <div class="acciones-hero">
+        <a href="#catalogo" class="boton boton-primario boton-grande">Ver productos</a>
+        <a href="#como-comprar" class="boton boton-secundario boton-grande">Como comprar</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       BUSCADOR
+       ============================================= -->
+  <section class="seccion-buscador">
+    <div class="contenedor">
+      <div class="grupo-busqueda">
+        <span class="icono-busqueda" aria-hidden="true">&#9998;</span>
+        <input
+          type="search"
+          id="campo-busqueda"
+          class="campo-busqueda"
+          placeholder="Buscar productos por nombre o descripcion..."
+          autocomplete="off"
+          aria-label="Buscar productos"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       CATALOGO DE PRODUCTOS
+       ============================================= -->
+  <section class="seccion-catalogo" id="catalogo">
+    <div class="contenedor">
+      <div class="encabezado-seccion">
+        <h2 class="titulo-seccion">Nuestros productos</h2>
+        <span class="contador-resultados" id="contador-resultados"></span>
+      </div>
+
+      <div class="grid-productos" id="grid-productos">
+        <!-- Los productos se cargan dinámicamente -->
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       SECCIÓN COMO COMPRAR
+       ============================================= -->
+  <section id="como-comprar" style="background-color: var(--color-fondo-secundario); padding: var(--espacio-20) 0;">
+    <div class="contenedor">
+      <div style="text-align: center; margin-bottom: var(--espacio-12);">
+        <h2>Como realizar tu pedido</h2>
+        <p style="color: var(--color-texto-secundario); margin-top: var(--espacio-3); font-size: var(--texto-lg);">
+          Simple, rapido y sin complicaciones
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--espacio-6);">
+        <div style="background: var(--color-superficie); padding: var(--espacio-8); border-radius: var(--radio-lg); border: 1px solid var(--color-borde-suave); text-align: center;">
+          <div style="font-family: var(--fuente-display); font-size: var(--texto-4xl); color: var(--color-acento); margin-bottom: var(--espacio-4);">1</div>
+          <h4 style="margin-bottom: var(--espacio-2);">Elige tus productos</h4>
+          <p style="font-size: var(--texto-sm); color: var(--color-texto-secundario);">Navega el catalogo y agrega al carrito lo que desees</p>
+        </div>
+        <div style="background: var(--color-superficie); padding: var(--espacio-8); border-radius: var(--radio-lg); border: 1px solid var(--color-borde-suave); text-align: center;">
+          <div style="font-family: var(--fuente-display); font-size: var(--texto-4xl); color: var(--color-acento); margin-bottom: var(--espacio-4);">2</div>
+          <h4 style="margin-bottom: var(--espacio-2);">Revisa tu carrito</h4>
+          <p style="font-size: var(--texto-sm); color: var(--color-texto-secundario);">Confirma cantidades y el total de tu pedido</p>
+        </div>
+        <div style="background: var(--color-superficie); padding: var(--espacio-8); border-radius: var(--radio-lg); border: 1px solid var(--color-borde-suave); text-align: center;">
+          <div style="font-family: var(--fuente-display); font-size: var(--texto-4xl); color: var(--color-acento); margin-bottom: var(--espacio-4);">3</div>
+          <h4 style="margin-bottom: var(--espacio-2);">Envia por WhatsApp</h4>
+          <p style="font-size: var(--texto-sm); color: var(--color-texto-secundario);">Te contactamos para coordinar el pago y la entrega</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       FOOTER
+       ============================================= -->
+  <footer class="footer">
+    <div class="contenedor">
+      <div class="footer-contenido">
+        <div>
+          <div class="footer-logo">BeautyLau Cosméticos</div>
+          <p class="footer-descripcion">
+            Tu tienda de confianza. Productos de calidad con atencion personalizada.
+          </p>
+        </div>
+        <div>
+          <p class="footer-titulo-columna">Navegacion</p>
+          <ul class="footer-enlaces">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="#catalogo">Productos</a></li>
+            <li><a href="#como-comprar">Como comprar</a></li>
+          </ul>
+        </div>
+        <!-- admin oculto: acceder directamente en /admin/index.html -->
+      </div>
+      <div class="footer-inferior">
+        <span>BeautyLau Cosméticos - Todos los derechos reservados</span>
+        <span>Pedidos por WhatsApp</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =============================================
+       PANEL DEL CARRITO (LATERAL)
+       ============================================= -->
+  <div class="overlay-carrito" id="overlay-carrito"></div>
+  <aside class="panel-carrito" id="panel-carrito" aria-label="Carrito de compras">
+    <div class="carrito-cabecera">
+      <h3 class="carrito-titulo">Tu carrito</h3>
+      <button class="boton-cerrar-carrito" id="btn-cerrar-carrito" aria-label="Cerrar carrito">
+        &times;
+      </button>
+    </div>
+
+    <div class="carrito-items" id="lista-items-carrito">
+      <!-- Los items se cargan dinámicamente -->
+    </div>
+
+    <div class="carrito-pie" id="pie-carrito" style="display: none;">
+      <div class="resumen-total">
+        <span class="etiqueta-total">Total del pedido</span>
+        <span class="valor-total" id="total-carrito">$0</span>
+      </div>
+      <button class="boton boton-acento boton-bloque boton-grande" id="btn-proceder-checkout">
+        Enviar pedido por WhatsApp
+      </button>
+      <button class="boton boton-secundario boton-bloque" id="btn-limpiar-carrito">
+        Vaciar carrito
+      </button>
+    </div>
+  </aside>
+
+  <!-- =============================================
+       MODAL DE CHECKOUT
+       ============================================= -->
+  <div class="modal-overlay" id="modal-checkout" role="dialog" aria-modal="true" aria-labelledby="titulo-checkout">
+    <div class="modal-contenido">
+      <div class="modal-cabecera">
+        <h3 class="modal-titulo" id="titulo-checkout">Finalizar pedido</h3>
+        <button class="boton-cerrar-carrito" id="btn-cerrar-checkout" aria-label="Cerrar">&times;</button>
+      </div>
+
+      <div class="modal-cuerpo">
+        <p style="font-size: var(--texto-sm); color: var(--color-texto-secundario); margin-bottom: var(--espacio-6);">
+          Completa tus datos para enviar el pedido por WhatsApp. Te contactaremos para coordinar el pago y la entrega.
+        </p>
+
+        <div class="grupo-campo">
+          <label class="etiqueta-campo" for="nombre-cliente">Nombre completo *</label>
+          <input type="text" id="nombre-cliente" class="campo-entrada" placeholder="Tu nombre completo" required />
+        </div>
+
+        <div class="grupo-campo">
+          <label class="etiqueta-campo" for="ciudad-cliente">Ciudad *</label>
+          <input type="text" id="ciudad-cliente" class="campo-entrada" placeholder="Tu ciudad" required />
+        </div>
+
+        <div class="grupo-campo">
+          <label class="etiqueta-campo" for="nota-cliente">Nota adicional (opcional)</label>
+          <textarea id="nota-cliente" class="campo-entrada campo-textarea" placeholder="Instrucciones especiales, direccion aproximada, etc."></textarea>
+        </div>
+      </div>
+
+      <div class="modal-pie">
+        <button class="boton boton-acento boton-bloque boton-grande" id="btn-enviar-whatsapp">
+          Enviar por WhatsApp
+        </button>
+        <button class="boton boton-secundario boton-bloque" id="btn-cancelar-checkout">
+          Volver al carrito
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================================
+       SCRIPTS
+       ============================================= -->
+  <script src="js/services/ui.js"></script>
+  <script src="js/services/api.js"></script>
+  <script src="js/services/carrito.js"></script>
+  <script src="js/tienda.js"></script>
+</body>
+</html>
