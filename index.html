@@ -6,6 +6,32 @@
   <title>BeautyLau Cosméticos</title>
   <meta name="description" content="Tienda online con los mejores productos. Compra facil y rapido." />
   <link rel="stylesheet" href="css/estilos.css" />
+  <style>
+    /* Mejora de visibilidad del scroll de categorías en PC */
+    .filtros-scroll {
+      display: flex;
+      gap: var(--espacio-3);
+      overflow-x: auto;
+      padding-bottom: var(--espacio-3);
+      margin-bottom: var(--espacio-6);
+      /* Firefox */
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-acento) var(--color-borde-suave);
+    }
+
+    /* Chrome, Safari y Edge */
+    .filtros-scroll::-webkit-scrollbar {
+      height: 6px;
+    }
+    .filtros-scroll::-webkit-scrollbar-track {
+      background: var(--color-borde-suave);
+      border-radius: 10px;
+    }
+    .filtros-scroll::-webkit-scrollbar-thumb {
+      background: var(--color-acento);
+      border-radius: 10px;
+    }
+  </style>
 </head>
 <body>
 

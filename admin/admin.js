@@ -20,6 +20,7 @@ const CATEGORIAS = [
   "👁️ Pestañinas",
   "🧴 Kit de skincare",
   "🧴 Bases",
+  "🖊️ Correctores",
   "💦 Fijadores",
   "🧪 Gel",
   "✏️ Delineadores",
@@ -282,13 +283,15 @@ function inicializarModalProducto() {
 
 function categorizarAutomatico(nombre) {
   const n = nombre.toLowerCase();
-  if (n.includes("polvo") || n.includes("hadas")) return "🧂 Polvos";
+  if (n.includes("paleta")) return "🎨 Paletas";
+  if (n.includes("polvo") || n.includes("hadas") || n.includes("alissha")) return "🧂 Polvos";
   if (n.includes("rubor") || n.includes("blush") || n.includes("berry bloom")) return "🌸 Rubores";
   if (n.includes("gloss")) return "💄 Gloss";
   if (n.includes("tinta") || n.includes("labial") || n.includes("balsamo") || n.includes("bálsamo") || n.includes("voluminizador") || n.includes("mimosa")) return "💋 Labiales";
-  if (n.includes("pestañina") || n.includes("prosa")) return "👁️ Pestañinas";
+  if (n.includes("pestañina") || n.includes("prosa") || n.includes("elaya")) return "👁️ Pestañinas";
   if (n.includes("skincare") || n.includes("serum") || n.includes("antioxidante") || n.includes("tónico") || n.includes("tonico") || n.includes("exfoliante") || n.includes("desmaquillante")) return "🧴 Kit de skincare";
-  if (n.includes("base") || n.includes("corrector") || n.includes("hi zis") || n.includes("bb myk")) return "🧴 Bases";
+  if (n.includes("corrector") || n.includes("hi zis") || n.includes("anik")) return "🖊️ Correctores";
+  if (n.includes("base") || n.includes("bb myk")) return "🧴 Bases";
   if (n.includes("fijador")) return "💦 Fijadores";
   if (n.includes("gel") || n.includes("melu")) return "🧪 Gel";
   if (n.includes("delineador") || n.includes("lapiz") || n.includes("lápiz")) return "✏️ Delineadores";
@@ -299,7 +302,6 @@ function categorizarAutomatico(nombre) {
   if (n.includes("blender")) return "🥚 Bunny blender";
   if (n.includes("cosmetiquera") || n.includes("washbag")) return "👜 Cosmetiqueras";
   if (n.includes("intimo") || n.includes("íntimo")) return "🧼 Cuidado íntimo";
-  if (n.includes("paleta") || n.includes("contorno")) return "🎨 Paletas";
   if (n.includes("primer")) return "🧴 Primer";
   if (n.includes("grasa") || n.includes("oil control") || n.includes("quita grasa")) return "🧻 Control de grasa";
   if (n.includes("bronzer")) return "🌞 Bronzer";
