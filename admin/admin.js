@@ -12,6 +12,31 @@
 const CONTRASENA_ADMIN = "admin123"; // CAMBIAR ESTO
 const CLAVE_SESION = "admin_sesion_activa";
 
+const CATEGORIAS = [
+  "🧂 Polvos",
+  "🌸 Rubores",
+  "💄 Gloss",
+  "💋 Labiales",
+  "👁️ Pestañinas",
+  "🧴 Kit de skincare",
+  "🧴 Bases",
+  "💦 Fijadores",
+  "🧪 Gel",
+  "✏️ Delineadores",
+  "🧼 Jabones",
+  "✨ Iluminadores",
+  "🖌️ Brochas",
+  "🧽 Borlas",
+  "🥚 Bunny blender",
+  "👜 Cosmetiqueras",
+  "🧼 Cuidado íntimo",
+  "🎨 Paletas",
+  "🧴 Primer",
+  "🧻 Control de grasa",
+  "🌞 Bronzer",
+  "👁️ Cejas"
+];
+
 // Estado del administrador
 const EstadoAdmin = {
   productos: [],
@@ -105,7 +130,8 @@ async function cargarProductosAdmin() {
     const respuesta = await API.obtenerProductos();
 
     if (respuesta.success) {
-      EstadoAdmin.productos = respuesta.data || [];
+      // Invertimos el orden para que lo más nuevo aparezca arriba en la tabla
+      EstadoAdmin.productos = (respuesta.data || []).reverse();
       EstadoAdmin.productosFiltrados = [...EstadoAdmin.productos];
       actualizarEstadisticas();
       renderizarTablaProductos(EstadoAdmin.productosFiltrados);
@@ -238,6 +264,13 @@ function inicializarModalProducto() {
   document.getElementById("btn-cancelar-modal-producto")?.addEventListener("click", cerrarModalProducto);
   document.getElementById("btn-guardar-producto")?.addEventListener("click", guardarProducto);
 
+  // Llenar select de categorías
+  const selectCat = document.getElementById("campo-categoria");
+  if (selectCat) {
+    selectCat.innerHTML = '<option value="">Selecciona una categoría...</option>' + 
+      CATEGORIAS.map(cat => `<option value="${cat}">${cat}</option>`).join("");
+  }
+
   // Vista previa de imagen
   document.getElementById("campo-imagen-url")?.addEventListener("input", actualizarVistaPrevia);
 
@@ -247,8 +280,36 @@ function inicializarModalProducto() {
   });
 }
 
+function categorizarAutomatico(nombre) {
+  const n = nombre.toLowerCase();
+  if (n.includes("polvo") || n.includes("hadas")) return "🧂 Polvos";
+  if (n.includes("rubor") || n.includes("blush") || n.includes("berry bloom")) return "🌸 Rubores";
+  if (n.includes("gloss")) return "💄 Gloss";
+  if (n.includes("tinta") || n.includes("labial") || n.includes("balsamo") || n.includes("bálsamo") || n.includes("voluminizador") || n.includes("mimosa")) return "💋 Labiales";
+  if (n.includes("pestañina") || n.includes("prosa")) return "👁️ Pestañinas";
+  if (n.includes("skincare") || n.includes("serum") || n.includes("antioxidante") || n.includes("tónico") || n.includes("tonico") || n.includes("exfoliante") || n.includes("desmaquillante")) return "🧴 Kit de skincare";
+  if (n.includes("base") || n.includes("corrector") || n.includes("hi zis") || n.includes("bb myk")) return "🧴 Bases";
+  if (n.includes("fijador")) return "💦 Fijadores";
+  if (n.includes("gel") || n.includes("melu")) return "🧪 Gel";
+  if (n.includes("delineador") || n.includes("lapiz") || n.includes("lápiz")) return "✏️ Delineadores";
+  if (n.includes("jabon") || n.includes("jabón")) return "🧼 Jabones";
+  if (n.includes("shimmer") || n.includes("iluminador") || n.includes("esplendor") || n.includes("aurum")) return "✨ Iluminadores";
+  if (n.includes("brocha")) return "🖌️ Brochas";
+  if (n.includes("borla")) return "🧽 Borlas";
+  if (n.includes("blender")) return "🥚 Bunny blender";
+  if (n.includes("cosmetiquera") || n.includes("washbag")) return "👜 Cosmetiqueras";
+  if (n.includes("intimo") || n.includes("íntimo")) return "🧼 Cuidado íntimo";
+  if (n.includes("paleta") || n.includes("contorno")) return "🎨 Paletas";
+  if (n.includes("primer")) return "🧴 Primer";
+  if (n.includes("grasa") || n.includes("oil control") || n.includes("quita grasa")) return "🧻 Control de grasa";
+  if (n.includes("bronzer")) return "🌞 Bronzer";
+  if (n.includes("cejas") || n.includes("betun") || n.includes("betún")) return "👁️ Cejas";
+  return ""; // En el admin lo dejamos vacío para obligarte a elegir una si no la reconoce
+}
+
 function abrirModalNuevoProducto() {
   limpiarFormularioProducto();
+  document.getElementById("campo-categoria").value = "";
   document.getElementById("titulo-modal-producto").textContent = "Nuevo producto";
   document.getElementById("campo-id-producto").value = "";
   UI.mostrarModal("modal-producto");
@@ -258,13 +319,26 @@ function abrirModalEditarProducto(id) {
   const producto = EstadoAdmin.productos.find(p => p.id === id);
   if (!producto) return;
 
+  // Extraer categoría de la descripción [Tag]
+  let desc = producto.descripcion || "";
+  let catEncontrada = "";
+  const match = desc.match(/^\[(.*?)\]/);
+  if (match) {
+    catEncontrada = match[1];
+    desc = desc.replace(/^\[.*?\]\s?/, "");
+  } else {
+    // Si no tiene categoría guardada en el Excel, intentar adivinarla por el nombre
+    catEncontrada = categorizarAutomatico(producto.nombre || "");
+  }
+
   document.getElementById("titulo-modal-producto").textContent = "Editar producto";
   document.getElementById("campo-id-producto").value = producto.id;
   document.getElementById("campo-nombre").value = producto.nombre || "";
   document.getElementById("campo-precio").value = producto.precio || "";
   document.getElementById("campo-stock").value = producto.stock || "0";
   document.getElementById("campo-imagen-url").value = producto.imagen_url || "";
-  document.getElementById("campo-descripcion").value = producto.descripcion || "";
+  document.getElementById("campo-descripcion").value = desc;
+  document.getElementById("campo-categoria").value = catEncontrada;
 
   actualizarVistaPrevia();
   UI.mostrarModal("modal-producto");
@@ -282,6 +356,7 @@ function limpiarFormularioProducto() {
   document.getElementById("campo-stock").value = "0";
   document.getElementById("campo-imagen-url").value = "";
   document.getElementById("campo-descripcion").value = "";
+  document.getElementById("campo-categoria").value = "";
   document.getElementById("vista-previa-imagen").style.display = "none";
 }
 
@@ -304,10 +379,11 @@ function actualizarVistaPrevia() {
 async function guardarProducto() {
   const id = document.getElementById("campo-id-producto").value;
   const nombre = document.getElementById("campo-nombre").value.trim();
+  const categoria = document.getElementById("campo-categoria").value;
   const precio = document.getElementById("campo-precio").value;
   const stock = document.getElementById("campo-stock").value;
   const imagenUrl = document.getElementById("campo-imagen-url").value.trim();
-  const descripcion = document.getElementById("campo-descripcion").value.trim();
+  let descripcion = document.getElementById("campo-descripcion").value.trim();
 
   // Validaciones
   if (!nombre) {
@@ -316,11 +392,20 @@ async function guardarProducto() {
     return;
   }
 
+  if (!categoria) {
+    UI.mostrarNotificacion("Debes seleccionar una categoría", "error");
+    document.getElementById("campo-categoria").focus();
+    return;
+  }
+
   if (!precio || isNaN(precio) || parseFloat(precio) < 0) {
     UI.mostrarNotificacion("El precio debe ser un numero valido", "error");
     document.getElementById("campo-precio").focus();
     return;
   }
+
+  // Guardar categoría dentro de la descripción
+  descripcion = `[${categoria}] ${descripcion}`;
 
   const boton = document.getElementById("btn-guardar-producto");
   UI.mostrarCarga(boton);

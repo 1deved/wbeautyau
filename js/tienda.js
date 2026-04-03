@@ -7,6 +7,7 @@
 const EstadoTienda = {
   todosLosProductos: [],
   productosFiltrados: [],
+  categoriaActual: 'Todas',
   cargando: false,
 };
 
@@ -41,8 +42,21 @@ async function cargarProductos() {
     const respuesta = await API.obtenerProductos();
 
     if (respuesta.success) {
-      EstadoTienda.todosLosProductos = respuesta.data || [];
+      // Invertimos el array para que los últimos (nuevos) salgan primero
+      EstadoTienda.todosLosProductos = (respuesta.data || []).reverse();
+      
+      // Lógica de categorización automática para productos antiguos
+      // (Solo se ejecuta si el producto no tiene ya el tag [Categoría])
+      EstadoTienda.todosLosProductos = EstadoTienda.todosLosProductos.map(p => {
+        if (!p.descripcion?.startsWith('[')) {
+          const cat = categorizarAutomatico(p.nombre);
+          p.descripcion = `[${cat}] ${p.descripcion || ''}`;
+        }
+        return p;
+      });
+
       EstadoTienda.productosFiltrados = [...EstadoTienda.todosLosProductos];
+      renderizarFiltrosCategorias();
       renderizarProductos(EstadoTienda.productosFiltrados);
     } else {
       mostrarErrorCarga(gridProductos, respuesta.message);
@@ -51,6 +65,75 @@ async function cargarProductos() {
     console.error("Error al cargar productos:", error);
     mostrarErrorConexion(gridProductos);
   }
+}
+
+function categorizarAutomatico(nombre) {
+  const n = nombre.toLowerCase();
+  if (n.includes("polvo") || n.includes("hadas")) return "🧂 Polvos";
+  if (n.includes("rubor") || n.includes("blush") || n.includes("berry bloom")) return "🌸 Rubores";
+  if (n.includes("gloss")) return "💄 Gloss";
+  if (n.includes("tinta") || n.includes("labial") || n.includes("balsamo") || n.includes("bálsamo") || n.includes("voluminizador") || n.includes("mimosa")) return "💋 Labiales";
+  if (n.includes("pestañina") || n.includes("prosa")) return "👁️ Pestañinas";
+  if (n.includes("skincare") || n.includes("serum") || n.includes("antioxidante") || n.includes("tónico") || n.includes("tonico") || n.includes("exfoliante") || n.includes("desmaquillante")) return "🧴 Kit de skincare";
+  if (n.includes("base") || n.includes("corrector") || n.includes("hi zis") || n.includes("bb myk")) return "🧴 Bases";
+  if (n.includes("fijador")) return "💦 Fijadores";
+  if (n.includes("gel") || n.includes("melu")) return "🧪 Gel";
+  if (n.includes("delineador") || n.includes("lapiz") || n.includes("lápiz")) return "✏️ Delineadores";
+  if (n.includes("jabon") || n.includes("jabón")) return "🧼 Jabones";
+  if (n.includes("shimmer") || n.includes("iluminador") || n.includes("esplendor") || n.includes("aurum")) return "✨ Iluminadores";
+  if (n.includes("brocha")) return "🖌️ Brochas";
+  if (n.includes("borla")) return "🧽 Borlas";
+  if (n.includes("blender")) return "🥚 Bunny blender";
+  if (n.includes("cosmetiquera") || n.includes("washbag")) return "👜 Cosmetiqueras";
+  if (n.includes("intimo") || n.includes("íntimo")) return "🧼 Cuidado íntimo";
+  if (n.includes("paleta") || n.includes("contorno")) return "🎨 Paletas";
+  if (n.includes("primer")) return "🧴 Primer";
+  if (n.includes("grasa") || n.includes("oil control") || n.includes("quita grasa")) return "🧻 Control de grasa";
+  if (n.includes("bronzer")) return "🌞 Bronzer";
+  if (n.includes("cejas") || n.includes("betun") || n.includes("betún")) return "👁️ Cejas";
+  return "💄 Otros"; // Respaldo por si el nombre no coincide con nada de lo anterior
+}
+
+function renderizarFiltrosCategorias() {
+  const contenedor = document.querySelector('.seccion-catalogo .contenedor');
+  if (!contenedor) return;
+
+  let divFiltros = document.getElementById('filtros-categorias');
+  if (!divFiltros) {
+    divFiltros = document.createElement('div');
+    divFiltros.id = 'filtros-categorias';
+    divFiltros.className = 'filtros-scroll';
+    const encabezado = document.querySelector('.encabezado-seccion');
+    encabezado.after(divFiltros);
+  }
+
+  const categoriasUnicas = ['Todas', ...new Set(EstadoTienda.todosLosProductos.map(p => extraerCategoria(p.descripcion)))];
+  
+  divFiltros.innerHTML = categoriasUnicas.map(cat => `
+    <button class="boton-filtro ${EstadoTienda.categoriaActual === cat ? 'activo' : ''}" onclick="filtrarPorCategoria('${cat}')">
+      ${cat}
+    </button>
+  `).join("");
+}
+
+function filtrarPorCategoria(cat) {
+  EstadoTienda.categoriaActual = cat;
+  if (cat === 'Todas') {
+    EstadoTienda.productosFiltrados = [...EstadoTienda.todosLosProductos];
+  } else {
+    EstadoTienda.productosFiltrados = EstadoTienda.todosLosProductos.filter(p => extraerCategoria(p.descripcion) === cat);
+  }
+  renderizarFiltrosCategorias();
+  renderizarProductos(EstadoTienda.productosFiltrados);
+}
+
+function extraerCategoria(descripcion) {
+  const match = (descripcion || "").match(/^\[(.*?)\]/);
+  return match ? match[1] : "💄 Otros";
+}
+
+function limpiarDescripcion(descripcion) {
+  return (descripcion || "").replace(/^\[.*?\]\s?/, "");
 }
 
 function mostrarErrorCarga(contenedor, mensaje) {
@@ -125,8 +208,10 @@ function renderizarProductos(productos) {
 function crearTarjetaProducto(producto, indice) {
   const estaAgotado = parseInt(producto.stock) <= 0;
   const imagenUrl = producto.imagen_url || UI.generarImagenPlaceholder();
-  const descripcionCorta = UI.truncarTexto(producto.descripcion, 100);
+  const descripcionLimpia = limpiarDescripcion(producto.descripcion);
+  const descripcionCorta = UI.truncarTexto(descripcionLimpia, 100);
   const precioFormateado = UI.formatearPrecio(producto.precio);
+  const categoria = extraerCategoria(producto.descripcion);
 
   return `
     <article class="tarjeta-producto" data-id="${producto.id}">
@@ -142,6 +227,7 @@ function crearTarjetaProducto(producto, indice) {
       </div>
 
       <div class="tarjeta-cuerpo">
+        <span class="tarjeta-categoria">${categoria}</span>
         <h3 class="tarjeta-nombre">${producto.nombre}</h3>
         ${descripcionCorta ? `<p class="tarjeta-descripcion">${descripcionCorta}</p>` : ""}
 
